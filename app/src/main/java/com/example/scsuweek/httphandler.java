@@ -26,7 +26,6 @@ public class httphandler extends AsyncTask <String, Void,String> {
                     .post(body)
                     .addHeader("content-type", "application/x-www-form-urlencoded")
                     .addHeader("cache-control", "no-cache")
-                    .addHeader("postman-token", "418788d6-a783-d3e8-1c52-5cef9a9d14f5")
                     .build();
             client.newCall(request).enqueue(new Callback() {
                 @Override

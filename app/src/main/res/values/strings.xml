@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">scsuweek</string>
+    <string name="app_name">science week 19</string>
     <string name="title_room1">ROOM 1</string>
     <string name="title_room2">ROOM 2</string>
     <string name="title_room3">ROOM 3</string>
     <string name="title_room4">DATA SCIENCE</string>
+    <string name="room_2_app_game"><![CDATA[ROOM 2 :APP & GAME =]]></string>
 </resources>
