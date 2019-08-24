@@ -14,10 +14,6 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
@@ -25,10 +21,10 @@ import static android.Manifest.permission.CAMERA;
 public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private static final int REQUEST_CAMERA = 1;
-    JsonSingleton j = new JsonSingleton();
     MainActivity main = new MainActivity();
     Bundle b;
     String room;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +43,9 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
             }
         }
     }
+
     private boolean checkPermission() {
-        return ( ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA ) == PackageManager.PERMISSION_GRANTED);
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
     }
 
     private void requestPermission() {
@@ -61,9 +58,9 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
                 if (grantResults.length > 0) {
 
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted){
+                    if (cameraAccepted) {
                         Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(CAMERA)) {
@@ -94,6 +91,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
                 .create()
                 .show();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -101,7 +99,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {
-                if(mScannerView == null) {
+                if (mScannerView == null) {
                     mScannerView = new ZXingScannerView(this);
                     setContentView(mScannerView);
                 }
@@ -118,6 +116,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
         super.onDestroy();
         mScannerView.stopCamera();
     }
+
     @Override
     public void handleResult(Result rawResult) {
 
@@ -125,122 +124,23 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
         Log.d("QRCodeScanner", rawResult.getText());
         Log.d("QRCodeScanner", rawResult.getBarcodeFormat().toString());
 
+        String str = rawResult.getText();
+        String url = "https://us-central1-scweek62-7febd.cloudfunctions.net/api/checkin/" + room;
+        new httphandler().execute(new String[]{url, str});
+        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_LONG).show();
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan Result");
+        builder.setTitle("success");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mScannerView.resumeCameraPreview(QrCodeScannerActivity.this);
             }
         });
-        builder.setNeutralButton("Visit", new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                        try {
-//                            new GetContacts().execute();
-            String str =  j.HttpPost(main.getRoom(),result);
-            Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-            }
-        });
-        builder.setMessage(rawResult.getText()+" "+room);
+        builder.setMessage("id: "+rawResult.getText() + "\nroom: " + (room == "4" ? "data science": room) );
         AlertDialog alert1 = builder.create();
         alert1.show();
-//        try {
-//            String str =  j.HttpPost(main.getRoom(),result);
-//            Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-    }
-//    private class GetContacts extends AsyncTask<Void, Void, Void> {
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            HttpHandler sh = new HttpHandler();
-//            // Making a request to url and getting response
-//            String url = "http://us-central1-scweek62-7febd.cloudfunctions.net/api/checkin/"+room;
-//            String jsonStr = sh.makeServiceCall(url);
-//
-//            Log.e("", "Response from url: " + jsonStr);
-//            if (jsonStr != null) {
-//                try {
-//                    JSONObject jsonObj = new JSONObject(jsonStr);
-//
-//                    // Getting JSON Array node
-//                    JSONArray contacts = jsonObj.getJSONArray("contacts");
-//
-//                    // looping through All Contacts
-//                    for (int i = 0; i < contacts.length(); i++) {
-//                        JSONObject c = contacts.getJSONObject(i);
-//                        String id = c.getString("id");
-//                        String name = c.getString("name");
-//                        String email = c.getString("email");
-//                        String address = c.getString("address");
-//                        String gender = c.getString("gender");
-//                        // Phone node is JSON Object
-//                        JSONObject phone = c.getJSONObject("phone");
-//                        String mobile = phone.getString("mobile");
-//                        String home = phone.getString("home");
-//                        String office = phone.getString("office");
-//
-//                    }
-//                } catch (final JSONException e) {
-//                    Log.e("", "Json parsing error: " + e.getMessage());
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Json parsing error: " + e.getMessage(),
-//                                    Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//
-//                }
-//
-//            } else {
-//                Log.e(TAG, "Couldn't get json from server.");
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getApplicationContext(),
-//                                "Couldn't get json from server. Check LogCat for possible errors!",
-//                                Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            super.onPostExecute(result);
-//            ListAdapter adapter = new SimpleAdapter(MainActivity.this, contactList,
-//                    R.layout.list_item, new String[]{ "email","mobile"},
-//                    new int[]{R.id.email, R.id.mobile});
-//            lv.setAdapter(adapter);
-//        }
-//
-//
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//    //            Toast.makeText(.this,"Json Data is
-//    //                    downloading",Toast.LENGTH_LONG).show();
-//
-//        }
-//
-//    }
 
+    }
 }

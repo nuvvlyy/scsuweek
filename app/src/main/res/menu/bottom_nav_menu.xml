@@ -15,5 +15,9 @@
         android:id="@+id/navigation_room3"
         android:icon="@drawable/ic_face_black_24dp"
         android:title="@string/title_room3"/>
+    <item
+        android:id="@+id/navigation_room4"
+        android:icon="@drawable/ic_cloud_black_24dp"
+        android:title="@string/title_room4"/>
 
 </menu>
