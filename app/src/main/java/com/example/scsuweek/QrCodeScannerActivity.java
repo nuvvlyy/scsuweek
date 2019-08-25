@@ -126,9 +126,8 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
 
         String str = rawResult.getText();
         String url = "https://us-central1-scweek62-7febd.cloudfunctions.net/api/checkin/" + room;
-        new httphandler().execute(new String[]{url, str});
+        new httphandler().execute(new String[]{url, str,"post"});
         Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_LONG).show();
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("success");
