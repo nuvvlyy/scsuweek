@@ -1,24 +1,21 @@
 package com.example.scsuweek;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -90,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = findViewById(R.id.message);
         mTextROOM = findViewById(R.id.room1);
         mTextCOUNT = findViewById(R.id.room1_count);
-//        mTextROOM2 = findViewById(R.id.room2_count);
-//        mTextROOM3 = findViewById(R.id.room3_count);
-//        mTextROOM4 = findViewById(R.id.room4_count);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mButton = findViewById(R.id.button);
         mButton.setOnClickListener(new View.OnClickListener() {

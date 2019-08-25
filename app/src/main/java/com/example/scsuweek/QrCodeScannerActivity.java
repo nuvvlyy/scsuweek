@@ -28,7 +28,6 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("onCreate", "onCreate");
         b = this.getIntent().getExtras();
         room = b.get("id").toString();
         mScannerView = new ZXingScannerView(this);
@@ -121,9 +120,6 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
     public void handleResult(Result rawResult) {
 
         final String result = rawResult.getText();
-        Log.d("QRCodeScanner", rawResult.getText());
-        Log.d("QRCodeScanner", rawResult.getBarcodeFormat().toString());
-
         String str = rawResult.getText();
         String url = "https://us-central1-scweek62-7febd.cloudfunctions.net/api/checkin/" + room;
         new httphandler().execute(new String[]{url, str,"post"});

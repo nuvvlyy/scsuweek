@@ -68,7 +68,6 @@ public class httphandler extends AsyncTask <String, Void,String> {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String mMessage = response.body().string();
-                        Log.i("JSONNNNNNNNNN222222", "GETTTTTTTTTTTTTTTTTTTTTT");
                         str = mMessage;
                         try {
                             int room1= ROOM1();
@@ -78,8 +77,6 @@ public class httphandler extends AsyncTask <String, Void,String> {
                         }
                     }
                 });
-//                str = request.toString();
-
                 return request.toString();
 
             }
@@ -94,36 +91,27 @@ public class httphandler extends AsyncTask <String, Void,String> {
 
     }
      static int ROOM1() throws JSONException {
-        Log.i("JSONNNSTRRRRRR", str );
         JSONObject Jobject = new JSONObject(str);
-        Log.i("JsonobjJSONNN", Jobject.toString() );
         JSONObject room1 = Jobject.getJSONObject("room1");
         int room1L =room1.length();
-        Log.i("JsonobjJSONNNROOM11", String.valueOf(room1L));
         return room1L;
     }
     static int ROOM2() throws JSONException {
         JSONObject Jobject = new JSONObject(str);
-        Log.i("JsonobjJSONNN", Jobject.toString() );
         JSONObject room2 = Jobject.getJSONObject("room2");
         int room2L =room2.length();
-        Log.i("JsonobjJSONNNROOM11", String.valueOf(room2L));
         return room2L;
     }
     static int ROOM3() throws JSONException {
         JSONObject Jobject = new JSONObject(str);
-        Log.i("JsonobjJSONNN", Jobject.toString() );
-        JSONObject room3 = Jobject.getJSONObject("room4");
+        JSONObject room3 = Jobject.getJSONObject("room3");
         int room3L =room3.length();
-        Log.i("JsonobjJSONNNROOM11", String.valueOf(room3L));
         return room3L;
     }
     static int ROOM4() throws JSONException {
         JSONObject Jobject = new JSONObject(str);
-        Log.i("JsonobjJSONNN", Jobject.toString() );
         JSONObject room4 = Jobject.getJSONObject("room4");
         int room4L =room4.length();
-        Log.i("JsonobjJSONNNROOM11", String.valueOf(room4L));
         return room4L;
     }
 
