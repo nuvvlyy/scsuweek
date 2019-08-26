@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextROOM;
     private TextView mTextCOUNT;
     private Button mButton;
+    private Button mIDButton;
     private ZXingScannerView zXingScannerView;
     private String room = "1" ;
     httphandler h = new httphandler();
@@ -41,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText("ROOM 1: IOT");
                     mTextCOUNT.setText(Integer.toString(h.ROOM1()));
                     setRoom("1");
-                    Toast.makeText(getApplicationContext(),"ROOM 1: IOT", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"ROOM 1: IOT", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.navigation_room2:
                     mTextMessage.setText("ROOM 2: APP & GAME");
                     mTextCOUNT.setText(Integer.toString(h.ROOM2()));
                     setRoom("2");
-                    Toast.makeText(getApplicationContext(),"ROOM 2: APP & GAME", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"ROOM 2: APP & GAME", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.navigation_room3:
                     mTextMessage.setText("ROOM 3: ROBOT");
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText("DATA SCIENCE");
                     mTextCOUNT.setText(Integer.toString(h.ROOM4()));
                     setRoom("4");
-                    Toast.makeText(getApplicationContext(),"DATA SCIENCE", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"DATA SCIENCE", Toast.LENGTH_SHORT).show();
                     return true;
             }
             } catch (JSONException e) {
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         mTextCOUNT = findViewById(R.id.room1_count);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mButton = findViewById(R.id.button);
+        mIDButton = findViewById(R.id.button3);
         mButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -100,10 +102,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+        mIDButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,inputID.class);
+                i.putExtra("id", room);
+                startActivity(i);
+            }
+        });
 
     }
     protected void onResume() {
-
         super.onResume();
         getHTTP();
     }

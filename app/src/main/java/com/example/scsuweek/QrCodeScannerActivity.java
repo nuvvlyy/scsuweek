@@ -21,7 +21,6 @@ import static android.Manifest.permission.CAMERA;
 public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private static final int REQUEST_CAMERA = 1;
-    MainActivity main = new MainActivity();
     Bundle b;
     String room;
 
@@ -35,7 +34,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {
-                Toast.makeText(getApplicationContext(), "Permission already granted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Permission already granted", Toast.LENGTH_SHORT).show();
 
             } else {
                 requestPermission();
@@ -94,7 +93,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
     @Override
     public void onResume() {
         super.onResume();
-
+        Toast.makeText(getApplicationContext(), room, Toast.LENGTH_SHORT).show();
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {
@@ -123,7 +122,7 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
         String str = rawResult.getText();
         String url = "https://us-central1-scweek62-7febd.cloudfunctions.net/api/checkin/" + room;
         new httphandler().execute(new String[]{url, str,"post"});
-        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("success");
@@ -133,9 +132,23 @@ public class QrCodeScannerActivity extends AppCompatActivity  implements ZXingSc
                 mScannerView.resumeCameraPreview(QrCodeScannerActivity.this);
             }
         });
-        builder.setMessage("id: "+rawResult.getText() + "\nroom: " + (room == "4" ? "data science": room) );
+        builder.setMessage(getRoomName(room)+"\nid: "+rawResult.getText()  );
         AlertDialog alert1 = builder.create();
         alert1.show();
 
+    }
+    String getRoomName(String room){
+        switch (room){
+            case "1" :
+                return "ROOM 1: IOT";
+            case "2" :
+                return "ROOM 2: APP & GAME";
+            case "3" :
+                return "ROOM 3: ROBOT";
+            case "4" :
+                return "DATA SCIENCE";
+
+        }
+        return null;
     }
 }
